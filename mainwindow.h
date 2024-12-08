@@ -2,11 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QLabel>
-#include <QStack>
-#include <QKeyEvent>
-#include <QPushButton>
-#include <map>
+#include "chatserver.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,34 +18,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    QString operand;
-    QString opcode;
-    QStack<QString> operands;
-    QStack<QString> opcodes;
-    QMap<int, QPushButton *> digitBTNs;
-
-    QString calculation(bool *ok = NULL);
-
 private slots:
+    void on_startStopButton_clicked();
 
-    void btnNumCliked();
+public slots:
+    void logMessage(const QString &msg);
 
-    void btnBinaryOperatorCliked();
-
-    void btnUnaryOperatorCliked();
-
-    void on_btnPeriod_clicked();
-
-    void on_btnDel_clicked();
-
-    void on_btnClearAll_clicked();
-
-    void on_btnEqual_clicked();
-
-    void btnSignClicked();
-
-    virtual void keyPressEvent(QKeyEvent *event);
 private:
     Ui::MainWindow *ui;
+
+    ChatServer *m_chatServer;
 };
 #endif // MAINWINDOW_H
