@@ -17,12 +17,11 @@ public:
 
     void sendKickRequest(const QString &adminUsername, const QString &targetUsername);
     void sendBanRequest(const QString &adminUsername, const QString &targetUsername);
-
+    void disconnectSocket(); // 新增这个函数用于断开连接
 signals:
     void logMessage(const QString &msg);
     void jsonReceived(ServerWorker *sender, const QJsonObject &docObj);
     void disconnectFromClient();
-
 
 private:
     QTcpSocket *m_serverSocket;

@@ -48,7 +48,6 @@ protected:
     void banUser(const QString &adminUsername, const QString &targetUsername) ;
 
 
-
 signals:
     void logMessage(const QString &msg);
 

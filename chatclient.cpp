@@ -10,8 +10,6 @@ ChatClient::ChatClient(QObject *parent) : QObject(parent)
     connect(m_clientSocket, &QTcpSocket::connected, this, &ChatClient::connected);
     connect(m_clientSocket, &QTcpSocket::readyRead, this, &ChatClient::onReadyRead);
 
-    void sendKickRequest(const QString &adminUsername, const QString &targetUsername);
-    void sendBanRequest(const QString &adminUsername, const QString &targetUsername);
 }
 
 void ChatClient::onReadyRead()
@@ -104,8 +102,10 @@ void ChatClient::sendKickRequest(const QString &adminUsername, const QString &ta
 
 void ChatClient::sendBanRequest(const QString &admin, const QString &target)
 {
-    if (m_clientSocket->state() != QAbstractSocket::ConnectedState)
+    if (m_clientSocket->state() != QAbstractSocket::ConnectedState) {
+        qDebug() << "Socket未处于连接状态，无法发送禁言请求，当前连接状态：" << m_clientSocket->state();
         return;
+    }
 
     QJsonObject banRequest;
     banRequest["type"] = "ban_user";
@@ -114,5 +114,9 @@ void ChatClient::sendBanRequest(const QString &admin, const QString &target)
 
     QDataStream serverStream(m_clientSocket);
     serverStream.setVersion(QDataStream::Qt_5_12);
-    serverStream << QJsonDocument(banRequest).toJson(QJsonDocument::Compact);
+    if (serverStream.device()->write(QJsonDocument(banRequest).toJson(QJsonDocument::Compact)) == -1) {
+        qDebug() << "发送禁言请求失败，可能是网络问题或其他错误";
+    } else {
+        qDebug() << "禁言请求已发送，管理员：" << admin << "，目标用户：" << target;
+    }
 }

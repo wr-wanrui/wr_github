@@ -104,3 +104,4 @@ void ServerWorker::sendBanRequest(const QString &adminUsername, const QString &t
     serverStream.setVersion(QDataStream::Qt_5_12);
     serverStream << QJsonDocument(request).toJson();
 }
+

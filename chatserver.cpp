@@ -311,7 +311,7 @@ void ChatServer::kickUser(const QString &adminUsername, const QString &targetUse
 void ChatServer::banUser(const QString &adminUsername, const QString &targetUsername)
 {
     if (!isAdmin(adminUsername)) {
-        qDebug() << "非管理员尝试执行禁言操作，已拒绝。";
+        qDebug() << "非管理员尝试执行禁言操作，已拒绝。管理员用户名：" << adminUsername;
         return;
     }
     if (adminUsername.isEmpty() || targetUsername.isEmpty()) {
