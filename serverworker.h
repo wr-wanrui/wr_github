@@ -15,10 +15,14 @@ public:
     QString userName();
     void setUserName(QString user);
 
+    void sendKickRequest(const QString &adminUsername, const QString &targetUsername);
+    void sendBanRequest(const QString &adminUsername, const QString &targetUsername);
+
 signals:
     void logMessage(const QString &msg);
     void jsonReceived(ServerWorker *sender, const QJsonObject &docObj);
     void disconnectFromClient();
+
 
 private:
     QTcpSocket *m_serverSocket;

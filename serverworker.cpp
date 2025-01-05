@@ -78,3 +78,29 @@ void ServerWorker::sendJson(const QJsonObject &json)
     socketStream.setVersion(QDataStream::Qt_5_7);
     socketStream << jsonData;
 }
+
+void ServerWorker::sendKickRequest(const QString &adminUsername, const QString &targetUsername)
+{
+    if (m_serverSocket->state() != QAbstractSocket::ConnectedState)
+        return;
+    QJsonObject request;
+    request["type"] = "kick_user";
+    request["admin"] = adminUsername;  // 添加发送请求的管理员用户名
+    request["target"] = targetUsername;
+    QDataStream serverStream(m_serverSocket);
+    serverStream.setVersion(QDataStream::Qt_5_12);
+    serverStream << QJsonDocument(request).toJson();
+}
+
+void ServerWorker::sendBanRequest(const QString &adminUsername, const QString &targetUsername)
+{
+    if (m_serverSocket->state() != QAbstractSocket::ConnectedState)
+        return;
+    QJsonObject request;
+    request["type"] = "ban_user";
+    request["admin"] = adminUsername;  // 添加发送请求的管理员用户名
+    request["target"] = targetUsername;
+    QDataStream serverStream(m_serverSocket);
+    serverStream.setVersion(QDataStream::Qt_5_12);
+    serverStream << QJsonDocument(request).toJson();
+}
